@@ -8,8 +8,7 @@ City AS employee_city,
 TitleOfCourtesy ||' '||LastName AS employee_name,
 ROUND((JULIANDAY('now') - JULIANDAY(BirthDate))/360.25)  AS employee_age, 
 ROUND((JULIANDAY('now') - JULIANDAY(HireDate))/360.25) AS working_year
-FROM Employees e 
-LEFT JOIN employees_age_temp USING(EmployeeID);
+FROM Employees e;
 
 
 -- Age and Seniority Calculations of Employees by City
