@@ -24,4 +24,3 @@ CASE
 END as Freight_cost 
 FROM Orders 
 group by ShipCity ;
-group by orders.shipcity ;
