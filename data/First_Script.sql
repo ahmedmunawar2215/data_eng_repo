@@ -1,17 +1,40 @@
--- Employee Statistics
-create temp table employee_statistics_temp as
+-- Employees by Title
+create temp table employees_by_title as
 SELECT
-  COUNT(EmployeeID) as number_of_employee,
-  COUNT(DISTINCT Title) as number_of_roles,
-  MAX(Title) as max_role,
-  COUNT(DISTINCT TitleOfCourtesy) as number_of_courtesy,
-  MAX(TitleOfCourtesy) as max_courtesy,
-  COUNT(DISTINCT City) as number_of_cities,
-  MAX(City) as max_city,
-  COUNT(DISTINCT Country) as number_of_country,
-  MAX(Country)
-FROM
-  Employees;
+	Title,
+	COUNT(EmployeeID) as number_of_employee
+  FROM
+  Employees
+  GROUP BY Title
+  ORDER BY Title 
+
+-------------------------------------------------------------------------------- 
+
+ -- Employee Distribution by City
+ create temp table number_of_employee_residing as
+SELECT
+       MAX(City) AS cities,
+       COUNT(City) AS number_of_employee_residing 
+FROM 
+	Employees e 
+GROUP BY 
+	city 
+ORDER BY 
+	city 
+	
+--------------------------------------------------------------------------------
+	
+-- Employee Distribution by Country
+ create temp table number_of_employee_by_country as
+SELECT   
+       MAX(Country) AS countries,
+       COUNT(Country) AS number_of_employee_residing
+FROM 
+	Employees e 
+GROUP BY 
+	country
+ORDER BY 
+	country
 	
 --------------------------------------------------------------------------------
 
