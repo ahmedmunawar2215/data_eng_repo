@@ -1,7 +1,7 @@
 -- CATEGORIES
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
-create temp table categories_temp as
+create temp table categories_temp_1 as
 
 select 
 categories.CategoryID as ID, 
@@ -16,7 +16,29 @@ round(avg(products.UnitPrice), 2) as average
 
 from Categories 
 join Products on products.CategoryID = categories.CategoryID
-group by categories.CategoryID ;
+group by categories.CategoryID;
+
+create temp table categories_temp_2 as
+select 
+'Total', 
+count(categories_temp_1.categories),
+sum(categories_temp_1.total_products), 
+sum(categories_temp_1.total_worth), 
+sum(categories_temp_1.In_stocks), 
+sum(categories_temp_1.Discontinued),
+sum(categories_temp_1.cheapest), 
+sum(categories_temp_1.most_expensive), 
+sum(categories_temp_1.average)
+
+from categories_temp_1;
+
+create temp table categories_temp as
+
+select * from categories_temp_1
+UNION
+select * from categories_temp_2;
+
+
 
 
 ------------------------------------------------------------------------------
@@ -34,19 +56,23 @@ when products.UnitPrice < categories_temp.average
 then "Below avrerage"
 when products.UnitPrice = categories_temp.average
 then "Equal to average"
-end
+end as Compare_with_Avg
 
 from Products 
-cross join Categories on Products.CategoryID = categories.CategoryID
-cross join categories_temp on products.CategoryID = categories_temp.ID;
+join Categories on Products.CategoryID = categories.CategoryID
+join categories_temp on products.CategoryID = categories_temp.ID;
 
 
 ------------------------------------------------------------------------------------
 select * from categories_temp;
+select * from categories_temp_1;
+select * from categories_temp_2;
 select * from avg_table;
 SELECT * FROM categories;
 select * from Products;
 drop table Categories_temp;
+drop table Categories_temp_1;
+drop table Categories_temp_2;
 drop table avg_table;
 
 
@@ -55,6 +81,38 @@ drop table avg_table;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
+
+
+
+-- territories
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+drop table territories_temp;
+
+
+create temp table territories_temp as
+
+select 
+Territories.TerritoryID, 
+Territories.TerritoryDescription , 
+Regions.RegionDescription  
+from Territories
+join Regions on Territories.RegionID == Regions.RegionID 
+;
+
+select * from territories_temp;
+
+select * from Territories;
+select * from Regions;
+
+
+
+
+
+
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
 
 
 -- Script-employee
@@ -114,9 +172,6 @@ DROP TABLE employees_status_temp;
 
 
 
-
-
-
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 
@@ -132,47 +187,6 @@ DROP TABLE employees_status_temp;
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 
-
--- territories
------------------------------------------------------------------------------
------------------------------------------------------------------------------
-drop table territories_temp;
-
-
-create temp table territories_temp as
-
-select 
-
-Territories.TerritoryDescription, 
-count(Territories.TerritoryID), 
-count(Territories.RegionID),
-min(Territories.TerritoryID),
-max(Territories.TerritoryID),
-avg(Territories.TerritoryID)
-
-from Territories 
-group by Territories.TerritoryDescription
-
-UNION 
-
-select "Total", count(Territories.TerritoryID), 
-count(Territories.RegionID),
-min(Territories.TerritoryID),
-max(Territories.TerritoryID),
-round(avg(Territories.TerritoryID), 2)
-from Territories
-
-order by 2
-;
-
-select * from territories_temp
-
-
-
-
-
------------------------------------------------------------------------------
------------------------------------------------------------------------------
 
 
 -- order details
