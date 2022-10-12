@@ -40,4 +40,4 @@
  select orderID,shipCity as Ship_City ,OrderDate as order_date,ShippedDate as shipped_date,
  RequiredDate as arrival_date
  from Orders o 
- group by ShipCity 
+ group by ShipCity; 
