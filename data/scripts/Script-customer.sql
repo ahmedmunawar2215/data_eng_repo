@@ -1,10 +1,6 @@
-SELECT * FROM Customers c 
-
---
-
-CREATE TEMP TABLE customer_by_city AS
+CREATE TEMP TABLE IF NOT EXISTS customer_by_city AS
 SELECT Country, City, COUNT(CustomerID)
 FROM Customers c 
 Group by Country, City
 
-SELECT * FROM customer_by_city
+SELECT * from customer_by_city

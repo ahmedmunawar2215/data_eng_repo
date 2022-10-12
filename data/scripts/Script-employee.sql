@@ -2,13 +2,15 @@ SELECT  * FROM  Employees e;
 
 --
 
-CREATE TEMP TABLE employees_age_temp AS
+CREATE TEMP TABLE IF NOT EXISTS employees_age_temp AS
 SELECT EmployeeID,
 City AS employee_city, 
 TitleOfCourtesy ||' '||LastName AS employee_name,
 ROUND((JULIANDAY('now') - JULIANDAY(BirthDate))/360.25)  AS employee_age, 
 ROUND((JULIANDAY('now') - JULIANDAY(HireDate))/360.25) AS working_year
 FROM Employees e;
+
+SELECT * FROM employees_age_temp;
 
 
 -- Age and Seniority Calculations of Employees by City
@@ -20,18 +22,21 @@ MAX(working_year), MIN(working_year), ROUND(AVG(working_year))
 FROM employees_age_temp
 GROUP BY employee_city;
 
+SELECT * FROM employees_calculation_temp;
 
--- Employees Seniorty and Retaire Status
+
+-- Employees Seniorty and Retire Status
 
 CREATE TEMP TABLE employees_status_temp AS
-SELECT  EmployeeID, employee_name, ROUND(employee_age) AS Employee_Age, ROUND(working_year) AS Working_Year,
+SELECT  EmployeeID, employee_name, ROUND(employee_age) AS Employee_Age, 
+ROUND(working_year) AS Working_Year,
 CASE 
 	WHEN working_year >= 30 THEN "Senior Staff"
 	WHEN working_year < 30 AND  working_year >20 THEN "Medior Staff"
 	ELSE "Junior Staff"
 END AS Seniorty_Status, 
 CASE 
-	WHEN employee_age > 65 THEN "Can Retaire"
+	WHEN employee_age > 65 THEN "Can Retire"
 	ELSE "Can't Retaire"
 END Retaire_Status
 FROM employees_age_temp
@@ -39,8 +44,8 @@ GROUP BY EmployeeID;
 
 --
 
-SELECT * FROM employees_age_temp;
-SELECT * FROM employees_calculation_temp;
+
+
 SELECT * FROM employees_status_temp;
 
 
