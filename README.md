@@ -8,7 +8,7 @@ when count>200 then 'Often selling' else 'Slow selling' end as sales_rate. This 
 After it this temp table will be joined back to main table and we will have a bigger picture of the main table. 
 Let me know if you have any questions
 
-##New task
+## New task
 18-11
 
 Check discord for stef presentation and for results in data folder
